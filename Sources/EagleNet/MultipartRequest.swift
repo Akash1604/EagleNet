@@ -24,7 +24,7 @@ public struct MultipartRequest: NetworkRequestable {
     }
     
     public var contentType: ContentType {
-        .init("multipart/form-data; boundary=\(boundary)")
+        .init("\(ContentType.multipartFormData); boundary=\(boundary)")
     }
     
     public let boundary = "Boundary-\(UUID().uuidString)"
