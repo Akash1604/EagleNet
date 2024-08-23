@@ -42,4 +42,4 @@ let response: User = try await EagleNet.networkService.execute(
 
 ## License
 
-EagleNet is available under the MIT license. See the LICENSE file for more info.
+EagleNet is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
