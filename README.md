@@ -9,7 +9,11 @@ This library aims to provide a simple and elegant approach to writing network re
 - **Customizable and testable:** Allow for flexibility and ensure code quality through testing.
 
 
-Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.
+Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.<br><br>
+
+
+For detailed information on feature status, please refer to the [Roadmap](https://github.com/AnbalaganD/EagleNet/wiki/Roadmap) file
+<br><br>
 
 ### Swift Package manager (SPM)
 
