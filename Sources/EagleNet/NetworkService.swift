@@ -16,8 +16,8 @@ public protocol NetworkService: Sendable {
     
     func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response
 
-    func addPreInterceptor(_ interceptor: PreInterceptor)
-    func addPostInterceptor(_ interceptor: PostInterceptor)
+    func addRequestInterceptor(_ interceptor: RequestInterceptor)
+    func addResponseInterceptor(_ interceptor: ResponseInterceptor)
 }
 
 final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
@@ -25,8 +25,8 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
     
-    private var preInterceptors = [PreInterceptor]()
-    private var postInterceptors = [PostInterceptor]()
+    private var requestInterceptor = [RequestInterceptor]()
+    private var responseInterceptors = [ResponseInterceptor]()
     
     required init(
         urlSession: URLSession = .shared,
@@ -59,13 +59,13 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             urlRequest.httpBody = try bodyValue.asBody(encoder: jsonEncoder)
         }
         
-        urlRequest = try await preInterceptors.reduce(urlRequest) { result, interceptor in
+        urlRequest = try await requestInterceptor.reduce(urlRequest) { result, interceptor in
             try await interceptor.modify(request: result)
         }
         
         let result = try await urlSession.data(for: urlRequest)
         
-        let (data, urlResponse) = try await postInterceptors.reduce(result) { result, interceptor in
+        let (data, urlResponse) = try await responseInterceptors.reduce(result) { result, interceptor in
             try await interceptor.modify(data: result.0, urlResponse: result.1)
         }
         
@@ -84,12 +84,12 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         }
     }
     
-    func addPreInterceptor(_ interceptor: PreInterceptor) {
-        preInterceptors.append(interceptor)
+    func addRequestInterceptor(_ interceptor: RequestInterceptor) {
+        requestInterceptor.append(interceptor)
     }
     
-    func addPostInterceptor(_ interceptor: PostInterceptor) {
-        postInterceptors.append(interceptor)
+    func addResponseInterceptor(_ interceptor: ResponseInterceptor) {
+        responseInterceptors.append(interceptor)
     }
     
     private func getRequestURL(_ request: NetworkRequestable) throws -> URL {

@@ -1,5 +1,5 @@
 //
-//  PostInterceptor.swift
+//  ResponseInterceptor.swift
 //  EagleNet
 //
 //  Created by Anbalagan on 19/08/24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public protocol PostInterceptor: Sendable {
+public protocol ResponseInterceptor: Sendable {
     func modify(
         data: Data,
         urlResponse: URLResponse
