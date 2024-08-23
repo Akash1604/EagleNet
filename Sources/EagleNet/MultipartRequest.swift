@@ -88,33 +88,56 @@ public struct MultipartRequest: NetworkRequestable {
     public mutating func addBodyParameter(
         key: String,
         value: Data,
-        fileName: String? = nil,
+        fileName: String,
+        contentType: ContentType = .applicationOctetStream
+    ) {
+        addBody(
+            key: key,
+            value: value,
+            fileName: fileName,
+            contentType: contentType
+        )
+    }
+    
+    public mutating func addBodyParameter(
+        key: String,
+        value: String,
         contentType: ContentType = .textPlain
-    ) throws {
+    ) {
+        addBody(
+            key: key,
+            value: Data(value.utf8),
+            contentType: contentType
+        )
+    }
+    
+    public mutating func addBodyParameters(
+        contentOf parameters: [String: String]
+    ) {
+        for (key, value) in parameters {
+            addBody(
+                key: key,
+                value: Data(value.utf8),
+                contentType: contentType
+            )
+        }
+    }
+    
+    private mutating func addBody(
+        key: String,
+        value: Data,
+        fileName: String? = nil,
+        contentType: ContentType
+    ) {
         data.append("--\(boundary)\(separator)")
         data.append("\(contentDisposition)\"\(key)\"")
         if let fileName {
             data.append("; filename=\"\(fileName)\"")
         }
         data.append(separator)
-        data.append("Content-Type: \(contentType.rawValue)")
+        data.append("Content-Type: \(contentType)")
         data.append("\(separator)\(separator)")
         data.append(value)
         data.append(separator)
-    }
-    
-    public mutating func addBodyParameter(
-        key: String,
-        value: String
-    ) throws {
-        try addBodyParameter(key: key, value: Data(value.utf8))
-    }
-    
-    public mutating func addBodyParameters(
-        contentOf parameters: [String: String]
-    ) throws {
-        for (key, value) in parameters {
-            try addBodyParameter(key: key, value: Data(value.utf8))
-        }
     }
 }
