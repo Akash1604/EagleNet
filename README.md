@@ -10,3 +10,36 @@ This library aims to provide a simple and elegant approach to writing network re
 
 
 Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.
+
+### Swift Package manager (SPM)
+
+EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use below URL to add as a dependency
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.0"))
+]
+```
+
+## Usage
+```swift
+import EagleNet
+
+struct User: Decodable {
+    let name: String
+    let profile: URL?
+}
+
+let response: User = try await EagleNet.networkService.execute(
+    DataRequest(url: "https://example.com/user/1")
+)
+
+```
+
+## Author
+
+[Anbalagan D](mailto:anbu94p@gmail.com)
+
+## License
+
+EagleNet is available under the MIT license. See the LICENSE file for more info.
