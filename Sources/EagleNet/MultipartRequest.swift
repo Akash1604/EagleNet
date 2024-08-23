@@ -103,6 +103,13 @@ public struct MultipartRequest: NetworkRequestable {
         data.append(separator)
     }
     
+    public mutating func addBodyParameter(
+        key: String,
+        value: String
+    ) throws {
+        try addBodyParameter(key: key, value: Data(value.utf8))
+    }
+    
     public mutating func addBodyParameters(
         contentOf parameters: [String: String]
     ) throws {

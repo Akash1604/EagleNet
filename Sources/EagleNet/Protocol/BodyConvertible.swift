@@ -17,15 +17,7 @@ extension BodyConvertible where Self == Data {
     }
 }
 
-extension BodyConvertible where Self == String {
-    public func asBody(encoder: JSONEncoder = .init()) throws -> Data {
-        Data(self.utf8)
-    }
-}
-
 extension Data: BodyConvertible { }
-
-extension String: BodyConvertible { }
 
 extension BodyConvertible {
     func asBody(encoder: JSONEncoder = .init()) throws -> Data {
