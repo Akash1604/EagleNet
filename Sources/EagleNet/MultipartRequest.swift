@@ -118,7 +118,7 @@ public struct MultipartRequest: NetworkRequestable {
             addBody(
                 key: key,
                 value: Data(value.utf8),
-                contentType: contentType
+                contentType: .textPlain
             )
         }
     }
