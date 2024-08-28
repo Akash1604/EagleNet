@@ -33,7 +33,7 @@ extension Encodable where Self: Sendable {
 
 struct AnyBodyConvertible<T>: BodyConvertible where T: Encodable, T: Sendable {
     let body: T
-    
+
     func asBody(encoder: JSONEncoder) throws -> Data {
         try encoder.encode(body)
     }

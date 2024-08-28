@@ -12,10 +12,13 @@ extension Array {
     ///
     /// - Parameters:
     ///     - initialResult: The initial value for the reduction.
-    ///     - nextPartialResult: An asynchronous closure that calculates the next partial result based on the previous result and the current element.
+    ///     - nextPartialResult: An asynchronous closure that calculates the
+    ///     next partial result based on the previous result and the current element.
     /// - Returns: The final result of the reduction, which is of the same type as `initialResult`.
     ///
-    /// This function iterates over the elements of the sequence, applying the `nextPartialResult` closure to each element and the previous result to calculate the next partial result. The final result is returned after all elements have been processed.
+    /// This function iterates over the elements of the sequence, applying the `nextPartialResult`
+    /// closure to each element and the previous result to calculate the next partial result.
+    /// The final result is returned after all elements have been processed.
     ///
     /// **Example:**
     /// ```swift

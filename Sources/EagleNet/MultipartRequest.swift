@@ -22,21 +22,21 @@ public struct MultipartRequest: NetworkRequestable {
         finalData.append("--\(boundary)--")
         return finalData
     }
-    
+
     public var contentType: ContentType {
         .init("\(ContentType.multipartFormData); boundary=\(boundary)")
     }
-    
+
     public let boundary = "Boundary-\(UUID().uuidString)"
     private let separator = "\r\n"
     private let contentDisposition = "Content-Disposition: form-data; name="
-    
+
     public init(
         url: String,
         path: String? = nil,
         httpMethod: HTTPMethod = .post,
-        headers: [String : String]? = nil,
-        parameters: [String : String]? = nil
+        headers: [String: String]? = nil,
+        parameters: [String: String]? = nil
     ) {
         self.url = url
         self.path = path
@@ -44,19 +44,19 @@ public struct MultipartRequest: NetworkRequestable {
         self.headers = headers
         self.parameters = parameters
     }
-    
+
     mutating func addHeader(key: String, value: String) {
-        if (headers == nil) {
+        if headers == nil {
             headers = [:]
         }
-        
+
         headers?[key] = value
     }
-    
+
     mutating func addHeader(
         contentOf contents: [String: String]
     ) {
-        if (headers == nil) {
+        if headers == nil {
             headers = contents
         } else {
             for (key, value) in contents {
@@ -64,19 +64,19 @@ public struct MultipartRequest: NetworkRequestable {
             }
         }
     }
-    
+
     mutating func addParameter(key: String, value: String) {
-        if (parameters == nil) {
+        if parameters == nil {
             parameters = [:]
         }
-        
+
         parameters?[key] = value
     }
-    
+
     mutating func addParameter(
         contentOf contents: [String: String]
     ) {
-        if (parameters == nil) {
+        if parameters == nil {
             parameters = contents
         } else {
             for (key, value) in contents {
@@ -84,7 +84,7 @@ public struct MultipartRequest: NetworkRequestable {
             }
         }
     }
-    
+
     public mutating func addBodyParameter(
         key: String,
         value: Data,
@@ -98,7 +98,7 @@ public struct MultipartRequest: NetworkRequestable {
             contentType: contentType
         )
     }
-    
+
     public mutating func addBodyParameter(
         key: String,
         value: String,
@@ -110,7 +110,7 @@ public struct MultipartRequest: NetworkRequestable {
             contentType: contentType
         )
     }
-    
+
     public mutating func addBodyParameters(
         contentOf parameters: [String: String]
     ) {
@@ -122,7 +122,7 @@ public struct MultipartRequest: NetworkRequestable {
             )
         }
     }
-    
+
     private mutating func addBody(
         key: String,
         value: Data,

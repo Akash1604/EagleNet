@@ -20,7 +20,7 @@ extension URLConvertible where Self == String {
         guard let url = URL(string: self) else {
             throw URLError.invalid
         }
-        
+
         return url
     }
 }
