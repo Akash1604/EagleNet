@@ -25,13 +25,13 @@ extension BodyConvertible {
     }
 }
 
-extension Encodable where Self: Sendable {
+extension Encodable {
     func asBodyConvertible() -> BodyConvertible {
         AnyBodyConvertible(body: self)
     }
 }
 
-struct AnyBodyConvertible<T>: BodyConvertible where T: Encodable, T: Sendable {
+struct AnyBodyConvertible<T>: BodyConvertible, @unchecked Sendable where T: Encodable {
     let body: T
 
     func asBody(encoder: JSONEncoder) throws -> Data {

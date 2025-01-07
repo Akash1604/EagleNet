@@ -36,7 +36,7 @@ public struct DataRequest: NetworkRequestable {
         httpMethod: HTTPMethod = .get,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: (some Encodable & Sendable)? = nil
+        body: Encodable? = nil
     ) {
         self.url = url
         self.path = path
