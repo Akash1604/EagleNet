@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// Centeralize protocol to handle network requests.
 public protocol NetworkService: Sendable {
     init(
         urlSession: URLSession,
