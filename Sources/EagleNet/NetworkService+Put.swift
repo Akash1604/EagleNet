@@ -27,10 +27,10 @@ extension NetworkService {
     
     public func put<Response: Decodable>(
         url: URLConvertible,
-        path: String,
+        path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: (some Encodable & Sendable)? = nil
+        body: (some Encodable)? = nil
     ) async throws -> Response {
         try await execute(
             DataRequest(
