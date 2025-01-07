@@ -11,11 +11,11 @@ enum URLError: Error {
     case invalid
 }
 
-protocol URLConvertible {
+public protocol URLConvertible: Sendable {
     func asURL() throws -> URL
 }
 
-extension URLConvertible where Self == String {
+public extension URLConvertible where Self == String {
     func asURL() throws -> URL {
         guard let url = URL(string: self) else {
             throw URLError.invalid
@@ -25,7 +25,7 @@ extension URLConvertible where Self == String {
     }
 }
 
-extension URLConvertible where Self == URL {
+public extension URLConvertible where Self == URL {
     func asURL() throws -> URL { self }
 }
 

@@ -1,0 +1,46 @@
+//
+//  NetworkService+Delete.swift
+//  EagleNet
+//
+//  Created by Anbalagan on 07/01/25.
+//
+
+extension NetworkService {
+    func delete<Response: Decodable>(
+        url: URLConvertible,
+        path: String? = nil,
+        headers: [String: String]? = nil,
+        parameters: [String: String]? = nil,
+        body: BodyConvertible? = nil
+    ) async throws -> Response {
+        try await execute(
+            DataRequest(
+                url: url,
+                path: path,
+                httpMethod: .delete,
+                headers: headers,
+                parameters: parameters,
+                body: body
+            )
+        )
+    }
+    
+    func delete<Response: Decodable>(
+        url: URLConvertible,
+        path: String,
+        headers: [String: String]? = nil,
+        parameters: [String: String]? = nil,
+        body: (some Encodable & Sendable)? = nil
+    ) async throws -> Response {
+        try await execute(
+            DataRequest(
+                url: url,
+                path: path,
+                httpMethod: .delete,
+                headers: headers,
+                parameters: parameters,
+                body: body
+            )
+        )
+    }
+}

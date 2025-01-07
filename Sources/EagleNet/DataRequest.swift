@@ -6,7 +6,7 @@
 //
 
 public struct DataRequest: NetworkRequestable {
-    public let url: String
+    public let url: URLConvertible
     public let path: String?
     public let httpMethod: HTTPMethod
     public private(set) var headers: [String: String]?
@@ -15,7 +15,7 @@ public struct DataRequest: NetworkRequestable {
     public var contentType: ContentType { .applicationJSON }
 
     public init(
-        url: String,
+        url: URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .get,
         headers: [String: String]? = nil,
@@ -31,7 +31,7 @@ public struct DataRequest: NetworkRequestable {
     }
 
     public init(
-        url: String,
+        url: URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .get,
         headers: [String: String]? = nil,

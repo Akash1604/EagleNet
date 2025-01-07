@@ -8,7 +8,7 @@
 import Foundation
 
 public struct MultipartRequest: NetworkRequestable {
-    public let url: String
+    public let url: URLConvertible
     public let path: String?
     public let httpMethod: HTTPMethod
     public private(set) var headers: [String: String]?
@@ -32,7 +32,7 @@ public struct MultipartRequest: NetworkRequestable {
     private let contentDisposition = "Content-Disposition: form-data; name="
 
     public init(
-        url: String,
+        url: URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .post,
         headers: [String: String]? = nil,
