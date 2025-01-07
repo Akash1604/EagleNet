@@ -6,7 +6,7 @@
 //
 
 extension NetworkService {
-    func put<Response: Decodable>(
+    public func put<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
@@ -25,7 +25,7 @@ extension NetworkService {
         )
     }
     
-    func put<Response: Decodable>(
+    public func put<Response: Decodable>(
         url: URLConvertible,
         path: String,
         headers: [String: String]? = nil,
