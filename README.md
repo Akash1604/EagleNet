@@ -21,7 +21,7 @@ EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.0"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.3"))
 ]
 ```
 
