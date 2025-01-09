@@ -24,7 +24,7 @@ extension NetworkService {
             )
         )
     }
-    
+
     public func get<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,

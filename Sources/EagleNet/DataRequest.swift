@@ -90,7 +90,7 @@ public struct DataRequest: NetworkRequestable {
         self.body = body
     }
 
-    mutating func setBody(_ body: some Encodable & Sendable) {
+    mutating func setBody(_ body: some Encodable) {
         self.body = body.asBodyConvertible()
     }
 }

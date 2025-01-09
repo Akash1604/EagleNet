@@ -24,7 +24,7 @@ extension NetworkService {
             )
         )
     }
-    
+
     public func delete<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,
