@@ -11,7 +11,8 @@ extension NetworkService {
         path: String? = nil,
         headers: [String: String]? = nil,
         queryParameters: [String: String]? = nil,
-        parameters: [MultipartParameter] = []
+        parameters: [MultipartParameter] = [],
+        progress: ProgressHandler? = nil
     ) async throws -> Response {
         var request = MultipartRequest(
             url: url,
@@ -38,6 +39,6 @@ extension NetworkService {
             }
         }
 
-        return try await execute(request)
+        return try await upload(request, progress: progress)
     }
 }

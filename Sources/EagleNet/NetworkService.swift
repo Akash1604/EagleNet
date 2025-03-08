@@ -17,6 +17,11 @@ public protocol NetworkService: Sendable {
 
     func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response
 
+    func upload<Response: Decodable>(
+        _ request: NetworkRequestable,
+        progress: ProgressHandler?
+    ) async throws -> Response
+
     func addRequestInterceptor(_ interceptor: RequestInterceptor)
     func addResponseInterceptor(_ interceptor: ResponseInterceptor)
 }
@@ -40,6 +45,57 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     }
 
     func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response {
+        var urlRequest = try buildRequest(from: request)
+
+        urlRequest = try await requestInterceptor.reduce(urlRequest) { result, interceptor in
+            try await interceptor.modify(request: result)
+        }
+
+        let result = try await urlSession.data(for: urlRequest)
+
+        let (data, urlResponse) = try await responseInterceptors.reduce(result) { result, interceptor in
+            try await interceptor.modify(data: result.0, urlResponse: result.1)
+        }
+
+        return try handleResponse(data: data, response: urlResponse)
+    }
+    
+    func upload<Response: Decodable>(
+        _ request: NetworkRequestable,
+        progress: ProgressHandler? = nil
+    ) async throws -> Response {
+        var urlRequest = try buildRequest(from: request)
+
+        urlRequest = try await requestInterceptor.reduce(urlRequest) { result, interceptor in
+            try await interceptor.modify(request: result)
+        }
+
+        let bodyData = urlRequest.httpBody ?? Data()
+        urlRequest.httpBody = nil
+        let result = try await urlSession.upload(
+            for: urlRequest,
+            from: bodyData,
+            delegate: SessionDelegate(progress: progress)
+        )
+
+        let (data, urlResponse) = try await responseInterceptors.reduce(result) { result, interceptor in
+            try await interceptor.modify(data: result.0, urlResponse: result.1)
+        }
+
+        return try handleResponse(data: data, response: urlResponse)
+    }
+
+    func addRequestInterceptor(_ interceptor: RequestInterceptor) {
+        requestInterceptor.append(interceptor)
+    }
+
+    func addResponseInterceptor(_ interceptor: ResponseInterceptor) {
+        responseInterceptors.append(interceptor)
+    }
+    
+    private func buildRequest(
+        from request: NetworkRequestable
+    ) throws -> URLRequest {
         let url = try getRequestURL(request)
 
         var urlRequest = URLRequest(url: url)
@@ -55,42 +111,12 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             request.contentType.rawValue,
             forHTTPHeaderField: "Content-Type"
         )
-
+        
         if let bodyValue = request.body {
             urlRequest.httpBody = try bodyValue.asBody(encoder: jsonEncoder)
         }
-
-        urlRequest = try await requestInterceptor.reduce(urlRequest) { result, interceptor in
-            try await interceptor.modify(request: result)
-        }
-
-        let result = try await urlSession.data(for: urlRequest)
-
-        let (data, urlResponse) = try await responseInterceptors.reduce(result) { result, interceptor in
-            try await interceptor.modify(data: result.0, urlResponse: result.1)
-        }
-
-        if let httpURLResponse = urlResponse as? HTTPURLResponse,
-              !httpURLResponse.isSuccess {
-            throw NetworkError.general(
-                message: httpURLResponse.description,
-                statusCode: httpURLResponse.statusCode
-            )
-        }
-
-        do {
-            return try jsonDecoder.decode(Response.self, from: data)
-        } catch {
-            throw NetworkError.parsingError(reason: error.localizedDescription)
-        }
-    }
-
-    func addRequestInterceptor(_ interceptor: RequestInterceptor) {
-        requestInterceptor.append(interceptor)
-    }
-
-    func addResponseInterceptor(_ interceptor: ResponseInterceptor) {
-        responseInterceptors.append(interceptor)
+        
+        return urlRequest
     }
 
     private func getRequestURL(_ request: NetworkRequestable) throws -> URL {
@@ -113,5 +139,24 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         }
 
         return constructedURL
+    }
+    
+    private func handleResponse<Response: Decodable>(
+        data: Data,
+        response: URLResponse
+    ) throws -> Response {
+        if let httpURLResponse = response as? HTTPURLResponse,
+              !httpURLResponse.isSuccess {
+            throw NetworkError.general(
+                message: httpURLResponse.description,
+                statusCode: httpURLResponse.statusCode
+            )
+        }
+
+        do {
+            return try jsonDecoder.decode(Response.self, from: data)
+        } catch {
+            throw NetworkError.parsingError(reason: error.localizedDescription)
+        }
     }
 }
