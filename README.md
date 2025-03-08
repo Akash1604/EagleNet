@@ -84,7 +84,7 @@ let response: UploadResponse = try await EagleNet.networkService.upload(
 )
 ```
 
-### Using Interceptors
+### Request Interceptors
 
 ```swift
 struct AuthInterceptor: RequestInterceptor {
@@ -103,7 +103,7 @@ EagleNet.networkService.addRequestInterceptor(
 )
 ```
 
-#### Response Interceptor
+### Response Interceptor
 ```swift
 struct LoggingInterceptor: ResponseInterceptor {
     func modify(data: Data, urlResponse: URLResponse) async throws -> (Data, URLResponse) {
