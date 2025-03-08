@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SessionDelegate.swift
 //  EagleNet
 //
 //  Created by Anbalagan on 09/01/25.
