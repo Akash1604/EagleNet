@@ -25,19 +25,102 @@ dependencies: [
 ]
 ```
 
-## Usage
+### Making a GET Request
+
 ```swift
 import EagleNet
 
 struct User: Decodable {
+    let id: Int
     let name: String
-    let profile: URL?
+    let email: String
 }
 
-let response: User = try await EagleNet.networkService.execute(
-    DataRequest(url: "https://example.com/user/1")
+// Basic GET request
+let user: User = try await EagleNet.networkService.get(
+    url: "https://api.example.com/users/1"
 )
+```
 
+### Making a POST Request
+
+```swift
+struct CreateUser: Encodable {
+    let name: String
+    let email: String
+}
+
+struct UserResponse: Decodable {
+    let id: Int
+    let name: String
+}
+
+let newUser = CreateUser(name: "Anbalagan D", email: "anbu94p@gmail.com")
+let response: UserResponse = try await EagleNet.networkService.post(
+    url: "https://api.example.com/users",
+    body: newUser
+)
+```
+
+### File Upload
+
+```swift
+let imageData = // ... your image data ...
+let response: UploadResponse = try await EagleNet.networkService.upload(
+    url: "https://api.example.com/upload",
+    parameters: [
+        .file(
+            key: "avatar",
+            fileName: "profile.jpg",
+            data: imageData,
+            mimeType: .jpegImage
+        ),
+        .text(key: "username", value: "Anbu")
+    ],
+    progress: { bytesTransferred, totalBytes in
+        let progress = Float(bytesTransferred) / Float(totalBytes)
+        print("Upload progress: \(Int(progress * 100))%")
+    }
+)
+```
+
+### Using Interceptors
+
+```swift
+struct AuthInterceptor: RequestInterceptor {
+    let token: String
+    
+    func modify(request: URLRequest) async throws -> URLRequest {
+        var modifiedRequest = request
+        modifiedRequest.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        return modifiedRequest
+    }
+}
+
+// Add interceptor to network service
+EagleNet.networkService.addRequestInterceptor(
+    AuthInterceptor(token: "your-auth-token")
+)
+```
+
+#### Response Interceptor
+```swift
+struct LoggingInterceptor: ResponseInterceptor {
+    func modify(data: Data, urlResponse: URLResponse) async throws -> (Data, URLResponse) {
+        if let httpResponse = urlResponse as? HTTPURLResponse {
+            print("Response Status Code: \(httpResponse.statusCode)")
+            print("Response Headers: \(httpResponse.allHeaderFields)")
+            
+            if let responseString = String(data: data, encoding: .utf8) {
+                print("Response Body: \(responseString)")
+            }
+        }
+        return (data, urlResponse)
+    }
+}
+
+// Add response interceptor to network service
+EagleNet.networkService.addResponseInterceptor(LoggingInterceptor())
 ```
 
 ## Author
