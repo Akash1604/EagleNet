@@ -7,22 +7,63 @@
 
 import Foundation
 
-/// Centeralize protocol to handle network requests.
+/// A protocol that defines the core networking capabilities for making HTTP requests.
+///
+/// NetworkService provides a centralized way to handle network requests with support for:
+/// - Async/await based networking
+/// - Request/Response interceptors
+/// - File uploads with progress tracking
+/// - JSON encoding/decoding
+///
+/// Example usage:
+/// ```swift
+/// let service = NetworkServiceImpl(
+///     urlSession: .shared,
+///     jsonEncoder: JSONEncoder(),
+///     jsonDecoder: JSONDecoder()
+/// )
+///
+/// // Add interceptors if needed
+/// service.addRequestInterceptor(AuthInterceptor(token: "token123"))
+///
+/// // Make network requests
+/// let response: User = try await service.execute(userRequest)
+/// ```
 public protocol NetworkService: Sendable {
+    /// Creates a new network service instance
+    /// - Parameters:
+    ///   - urlSession: URLSession instance for making network requests
+    ///   - jsonEncoder: Encoder for request body serialization
+    ///   - jsonDecoder: Decoder for response deserialization
     init(
         urlSession: URLSession,
         jsonEncoder: JSONEncoder,
         jsonDecoder: JSONDecoder
     )
 
+    /// Executes a network request and returns the decoded response
+    /// - Parameter request: The request to execute
+    /// - Returns: Decoded response of type `Response`
+    /// - Throws: NetworkError if the request fails or response cannot be decoded
     func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response
 
+    /// Uploads data with progress tracking
+    /// - Parameters:
+    ///   - request: The upload request to execute
+    ///   - progress: Optional closure to track upload progress
+    /// - Returns: Decoded response of type `Response`
+    /// - Throws: NetworkError if the upload fails or response cannot be decoded
     func upload<Response: Decodable>(
         _ request: NetworkRequestable,
         progress: ProgressHandler?
     ) async throws -> Response
 
+    /// Adds an interceptor to modify requests before they are sent
+    /// - Parameter interceptor: The request interceptor to add
     func addRequestInterceptor(_ interceptor: RequestInterceptor)
+
+    /// Adds an interceptor to modify responses before they are decoded
+    /// - Parameter interceptor: The response interceptor to add
     func addResponseInterceptor(_ interceptor: ResponseInterceptor)
 }
 

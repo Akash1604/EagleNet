@@ -7,14 +7,44 @@
 
 import Foundation
 
+/// A structure that represents a multipart/form-data request for file uploads and form submissions.
+///
+/// Example usage:
+/// ```swift
+/// // Create a multipart request for file upload
+/// var request = MultipartRequest(url: "https://api.example.com/upload")
+///
+/// // Add file data
+/// request.addBodyParameter(
+///     key: "avatar",
+///     value: imageData,
+///     fileName: "profile.jpg",
+///     contentType: .jpegImage
+/// )
+///
+/// // Add text fields
+/// request.addBodyParameter(key: "username", value: "john_doe")
+/// ```
 public struct MultipartRequest: NetworkRequestable {
+    /// The base URL for the request
     public let url: URLConvertible
+    
+    /// Optional path component to append to the base URL
     public let path: String?
+    
+    /// HTTP method for the request (defaults to POST)
     public let httpMethod: HTTPMethod
+    
+    /// Optional HTTP headers for the request
     public private(set) var headers: [String: String]?
+    
+    /// Optional query parameters for the request
     public private(set) var parameters: [String: String]?
 
+    /// Internal storage for multipart form data
     private var data = Data()
+    
+    /// The compiled body data with boundary terminator
     public var body: (any BodyConvertible)? {
         if data.isEmpty { return nil }
 
@@ -23,14 +53,27 @@ public struct MultipartRequest: NetworkRequestable {
         return finalData
     }
 
+    /// Content type with multipart boundary
     public var contentType: ContentType {
         .init("\(ContentType.multipartFormData); boundary=\(boundary)")
     }
 
+    /// Unique boundary string for separating form parts
     public let boundary = "Boundary-\(UUID().uuidString)"
+    
+    /// CRLF separator for multipart sections
     private let separator = "\r\n"
+    
+    /// Standard content disposition header
     private let contentDisposition = "Content-Disposition: form-data; name="
 
+    /// Creates a new multipart form request
+    /// - Parameters:
+    ///   - url: The base URL for the request
+    ///   - path: Optional path to append to the URL
+    ///   - httpMethod: HTTP method (defaults to POST)
+    ///   - headers: Optional HTTP headers
+    ///   - parameters: Optional query parameters
     public init(
         url: URLConvertible,
         path: String? = nil,
@@ -45,6 +88,10 @@ public struct MultipartRequest: NetworkRequestable {
         self.parameters = parameters
     }
 
+    /// Adds a single header to the request
+    /// - Parameters:
+    ///   - key: Header name
+    ///   - value: Header value
     mutating func addHeader(key: String, value: String) {
         if headers == nil {
             headers = [:]
@@ -53,6 +100,8 @@ public struct MultipartRequest: NetworkRequestable {
         headers?[key] = value
     }
 
+    /// Adds multiple headers to the request
+    /// - Parameter contents: Dictionary of headers to add
     mutating func addHeader(
         contentOf contents: [String: String]
     ) {
@@ -65,6 +114,10 @@ public struct MultipartRequest: NetworkRequestable {
         }
     }
 
+    /// Adds a single query parameter to the request
+    /// - Parameters:
+    ///   - key: Parameter name
+    ///   - value: Parameter value
     mutating func addParameter(key: String, value: String) {
         if parameters == nil {
             parameters = [:]
@@ -73,6 +126,8 @@ public struct MultipartRequest: NetworkRequestable {
         parameters?[key] = value
     }
 
+    /// Adds multiple query parameters to the request
+    /// - Parameter contents: Dictionary of parameters to add
     mutating func addParameter(
         contentOf contents: [String: String]
     ) {
@@ -85,6 +140,12 @@ public struct MultipartRequest: NetworkRequestable {
         }
     }
 
+    /// Adds a file or binary data to the multipart form
+    /// - Parameters:
+    ///   - key: Form field name
+    ///   - value: Binary data to upload
+    ///   - fileName: Name of the file being uploaded
+    ///   - contentType: MIME type of the file (defaults to application/octet-stream)
     public mutating func addBodyParameter(
         key: String,
         value: Data,
@@ -99,6 +160,11 @@ public struct MultipartRequest: NetworkRequestable {
         )
     }
 
+    /// Adds a text field to the multipart form
+    /// - Parameters:
+    ///   - key: Form field name
+    ///   - value: Text value
+    ///   - contentType: MIME type of the text (defaults to text/plain)
     public mutating func addBodyParameter(
         key: String,
         value: String,
@@ -111,6 +177,8 @@ public struct MultipartRequest: NetworkRequestable {
         )
     }
 
+    /// Adds multiple text fields to the multipart form
+    /// - Parameter parameters: Dictionary of field names and values
     public mutating func addBodyParameters(
         contentOf parameters: [String: String]
     ) {
@@ -123,6 +191,12 @@ public struct MultipartRequest: NetworkRequestable {
         }
     }
 
+    /// Internal helper to add a form part with proper boundaries and headers
+    /// - Parameters:
+    ///   - key: Form field name
+    ///   - value: Data to add
+    ///   - fileName: Optional filename for file uploads
+    ///   - contentType: MIME type of the content
     private mutating func addBody(
         key: String,
         value: Data,
