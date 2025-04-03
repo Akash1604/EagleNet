@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ContentType: CustomStringConvertible {
+public struct ContentType: CustomStringConvertible, Sendable {
     let rawValue: String
 
     public var description: String { rawValue }

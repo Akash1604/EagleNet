@@ -22,4 +22,4 @@
 ///     print("Progress: \(Int(progress * 100))%")
 /// }
 /// ```
-public typealias ProgressHandler = (Int64, Int64) -> Void
+public typealias ProgressHandler = @Sendable (Int64, Int64) -> Void
