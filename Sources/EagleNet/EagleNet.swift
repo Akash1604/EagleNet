@@ -6,5 +6,5 @@
 //
 
 public enum EagleNet {
-    public static let networkService: NetworkService = NetworkServiceImpl()
+    static let networkService: NetworkService = NetworkServiceImpl()
 }

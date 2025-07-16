@@ -1,19 +1,19 @@
 //
-//  NetworkService+Upload.swift
+//  EagleNet+Upload.swift
 //  EagleNet
 //
 //  Created by Anbalagan on 07/01/25.
 //
 
-/// Extension providing file upload convenience methods for NetworkService
-extension NetworkService {
+/// Extension providing file upload convenience methods for EagleNet
+extension EagleNet {
     /// Performs a multipart form-data upload request
     ///
     /// Example usage:
     /// ```swift
     /// // Upload an image with additional form fields
     /// let imageData = // ... your image data ...
-    /// let response: UploadResponse = try await networkService.upload(
+    /// let response: UploadResponse = try await EagleNet.upload(
     ///     url: "https://api.example.com",
     ///     path: "/upload",
     ///     headers: ["Authorization": "Bearer token123"],
@@ -42,7 +42,7 @@ extension NetworkService {
     ///   - progress: Optional closure to track upload progress
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the upload fails or response cannot be decoded
-    public func upload<Response: Decodable>(
+    public static func upload<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
@@ -75,6 +75,6 @@ extension NetworkService {
             }
         }
 
-        return try await upload(request, progress: progress)
+        return try await networkService.upload(request, progress: progress)
     }
 }

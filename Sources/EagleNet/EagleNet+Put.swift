@@ -1,20 +1,22 @@
 //
-//  NetworkService+Get.swift
+//  EagleNet+Put.swift
 //  EagleNet
 //
 //  Created by Anbalagan on 07/01/25.
 //
 
-/// Extension providing GET request convenience methods for NetworkService
-extension NetworkService {
-    /// Performs a GET request with a BodyConvertible body
+/// Extension providing PUT request convenience methods for EagleNet
+extension EagleNet {
+    /// Performs a PUT request with a BodyConvertible body
     ///
     /// Example usage:
     /// ```swift
-    /// let users: [User] = try await networkService.get(
+    /// let rawData = "{\"data\": \"Hello Anbu\"}".data(using: .utf8)!
+    /// let response: APIResponse = try await EagleNet.put(
     ///     url: "https://api.example.com",
-    ///     path: "/users",
-    ///     parameters: ["page": "1", "limit": "10"]
+    ///     path: "/documents/123",
+    ///     headers: ["Authorization": "Bearer token123"],
+    ///     body: rawData
     /// )
     /// ```
     ///
@@ -26,18 +28,18 @@ extension NetworkService {
     ///   - body: Optional request body conforming to BodyConvertible
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
-    public func get<Response: Decodable>(
+    public static func put<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
         body: BodyConvertible? = nil
     ) async throws -> Response {
-        try await execute(
+        try await networkService.execute(
             DataRequest(
                 url: url,
                 path: path,
-                httpMethod: .get,
+                httpMethod: .put,
                 headers: headers,
                 parameters: parameters,
                 body: body
@@ -45,20 +47,20 @@ extension NetworkService {
         )
     }
 
-    /// Performs a GET request with an Encodable body
+    /// Performs a PUT request with an Encodable body
     ///
     /// Example usage:
     /// ```swift
-    /// struct SearchParams: Encodable {
-    ///     let query: String
-    ///     let filter: String
+    /// struct UpdateUser: Encodable {
+    ///     let name: String
+    ///     let age: Int
     /// }
     ///
-    /// let params = SearchParams(query: "swift", filter: "language")
-    /// let results: SearchResults = try await networkService.get(
+    /// let updatedUser = UpdateUser(name: "John Smith", age: 31)
+    /// let response: UserResponse = try await EagleNet.put(
     ///     url: "https://api.example.com",
-    ///     path: "/search",
-    ///     body: params
+    ///     path: "/users/123",
+    ///     body: updatedUser
     /// )
     /// ```
     ///
@@ -70,18 +72,18 @@ extension NetworkService {
     ///   - body: Optional request body conforming to Encodable
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
-    public func get<Response: Decodable>(
+    public static func put<Response: Decodable>(
         url: URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
         body: (some Encodable)? = nil
     ) async throws -> Response {
-        try await execute(
+        try await networkService.execute(
             DataRequest(
                 url: url,
                 path: path,
-                httpMethod: .get,
+                httpMethod: .put,
                 headers: headers,
                 parameters: parameters,
                 body: body

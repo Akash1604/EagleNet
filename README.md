@@ -21,7 +21,7 @@ EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.5"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.6"))
 ]
 ```
 
@@ -37,7 +37,7 @@ struct User: Decodable {
 }
 
 // Basic GET request
-let user: User = try await EagleNet.networkService.get(
+let user: User = try await EagleNet.get(
     url: "https://api.example.com/users/1"
 )
 ```
@@ -56,7 +56,7 @@ struct UserResponse: Decodable {
 }
 
 let newUser = CreateUser(name: "Anbalagan D", email: "anbu94p@gmail.com")
-let response: UserResponse = try await EagleNet.networkService.post(
+let response: UserResponse = try await EagleNet.post(
     url: "https://api.example.com/users",
     body: newUser
 )
@@ -66,7 +66,7 @@ let response: UserResponse = try await EagleNet.networkService.post(
 
 ```swift
 let imageData = // ... your image data ...
-let response: UploadResponse = try await EagleNet.networkService.upload(
+let response: UploadResponse = try await EagleNet.upload(
     url: "https://api.example.com/upload",
     parameters: [
         .file(
@@ -98,7 +98,7 @@ struct AuthInterceptor: RequestInterceptor {
 }
 
 // Add interceptor to network service
-EagleNet.networkService.addRequestInterceptor(
+EagleNet.addRequestInterceptor(
     AuthInterceptor(token: "your-auth-token")
 )
 ```
@@ -120,7 +120,7 @@ struct LoggingInterceptor: ResponseInterceptor {
 }
 
 // Add response interceptor to network service
-EagleNet.networkService.addResponseInterceptor(LoggingInterceptor())
+EagleNet.addResponseInterceptor(LoggingInterceptor())
 ```
 
 ## Author
