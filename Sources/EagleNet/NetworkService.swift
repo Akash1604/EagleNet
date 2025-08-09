@@ -164,7 +164,7 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         let url = try request.url.asURL()
 
         guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
-            throw URLError.invalid
+            throw NetworkError.invalidURL
         }
 
         if let path = request.path {
@@ -176,7 +176,7 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         }
 
         guard let constructedURL = urlComponents.url else {
-            throw URLError.invalid
+            throw NetworkError.invalidURL
         }
 
         return constructedURL
@@ -188,9 +188,10 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
     ) throws -> Response {
         if let httpURLResponse = response as? HTTPURLResponse,
               !httpURLResponse.isSuccess {
-            throw NetworkError.general(
+            throw NetworkError.failure(
                 message: httpURLResponse.description,
-                statusCode: httpURLResponse.statusCode
+                statusCode: httpURLResponse.statusCode,
+                data: data
             )
         }
 

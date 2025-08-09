@@ -50,5 +50,44 @@
 /// ```
 public enum EagleNet {
     /// The underlying network service that handles all requests
-    static let networkService: NetworkService = NetworkServiceImpl()
+    @EagleNetActor
+    static var networkService: NetworkService = NetworkServiceImpl()
+    
+    /// Configures EagleNet with a custom network service implementation.
+    ///
+    /// This method allows you to replace the default NetworkService with a custom implementation,
+    /// enabling advanced configurations like custom URLSession settings, mock services for testing,
+    /// or specialized networking behavior.
+    ///
+    /// - Parameter networkService: The custom NetworkService implementation to use
+    ///
+    /// ## Usage Examples
+    ///
+    /// ### Custom URLSession Configuration
+    /// ```swift
+    /// let configuration = URLSessionConfiguration.default
+    /// configuration.timeoutIntervalForRequest = 30
+    /// configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
+    ///
+    /// let customService = CustomNetworkService(
+    ///     urlSession: URLSession(configuration: configuration),
+    ///     jsonEncoder: JSONEncoder(),
+    ///     jsonDecoder: JSONDecoder()
+    /// )
+    ///
+    /// EagleNet.configure(networkService: customService)
+    /// ```
+    ///
+    /// ### Mock Service for Testing
+    /// ```swift
+    /// let mockService = MockNetworkService()
+    /// EagleNet.configure(networkService: mockService)
+    /// ```
+    ///
+    /// - Important: Call this method before making any network requests to ensure
+    ///   the custom configuration is applied consistently.
+    @EagleNetActor
+    public static func configure(networkService: NetworkService) {
+        EagleNet.networkService = networkService
+    }
 }

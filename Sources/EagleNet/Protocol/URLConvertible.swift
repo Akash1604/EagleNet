@@ -7,14 +7,6 @@
 
 import Foundation
 
-/// Error type for URL conversion failures
-///
-/// Used when a string cannot be converted to a valid URL
-enum URLError: Error {
-    /// Indicates that the provided value could not be converted to a valid URL
-    case invalid
-}
-
 /// Protocol for types that can be converted to a URL
 ///
 /// This protocol allows for flexible URL handling in network requests.
@@ -39,17 +31,17 @@ enum URLError: Error {
 public protocol URLConvertible: Sendable {
     /// Converts the implementing type to a URL
     /// - Returns: A URL object
-    /// - Throws: URLError.invalid if conversion fails
+    /// - Throws: NetworkError.invalidURL if conversion fails
     func asURL() throws -> URL
 }
 
 public extension URLConvertible where Self == String {
     /// Converts a string to a URL
     /// - Returns: A URL created from the string
-    /// - Throws: URLError.invalid if the string is not a valid URL
+    /// - Throws: NetworkError.invalidURL if the string is not a valid URL
     func asURL() throws -> URL {
         guard let url = URL(string: self) else {
-            throw URLError.invalid
+            throw NetworkError.invalidURL
         }
 
         return url
