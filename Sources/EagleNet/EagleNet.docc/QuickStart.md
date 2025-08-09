@@ -61,4 +61,21 @@ do {
 }
 ```
 
+## Configuration (Optional)
+
+Customize EagleNet with your own settings:
+
+```swift
+let configuration = URLSessionConfiguration.default
+configuration.timeoutIntervalForRequest = 30
+
+let customService = NetworkServiceImpl(
+    urlSession: URLSession(configuration: configuration),
+    jsonEncoder: JSONEncoder(),
+    jsonDecoder: JSONDecoder()
+)
+
+EagleNet.configure(networkService: customService)
+```
+
 That's it! You're ready to start making network requests with EagleNet.

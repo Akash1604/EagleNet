@@ -36,6 +36,7 @@ Currently supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and
 
 - <doc:RequestInterceptors>
 - <doc:ResponseInterceptors>
+- <doc:Configuration>
 - <doc:ErrorHandling>
 
 ### Examples

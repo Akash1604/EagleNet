@@ -25,6 +25,21 @@ struct CreateUserRequest: Encodable {
 class UserService {
     
     init() {
+        // Optional: Configure custom network service only if you need advanced settings
+        // Otherwise, EagleNet uses sensible defaults
+        /*
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 30
+        
+        let customService = NetworkServiceImpl(
+            urlSession: URLSession(configuration: configuration),
+            jsonEncoder: JSONEncoder(),
+            jsonDecoder: JSONDecoder()
+        )
+        
+        EagleNet.configure(networkService: customService)
+        */
+        
         // Setup authentication
         EagleNet.addRequestInterceptor(
             AuthInterceptor(token: "your-auth-token")
@@ -145,27 +160,29 @@ class APIClient {
     
     func request<T: Decodable>(
         endpoint: String,
-        method: HTTPMethod = .GET,
+        method: HTTPMethod = .get,
         body: Encodable? = nil
     ) async throws -> T {
         let url = "\(baseURL)\(endpoint)"
         
         do {
             switch method {
-            case .GET:
+            case .get:
                 return try await EagleNet.get(url: url)
-            case .POST:
+            case .post:
                 return try await EagleNet.post(url: url, body: body)
-            case .PUT:
+            case .put:
                 return try await EagleNet.put(url: url, body: body)
-            case .DELETE:
+            case .delete:
                 try await EagleNet.delete(url: url)
                 return EmptyResponse() as! T
             }
-        } catch NetworkError.httpError(let statusCode, let data) {
+        } catch NetworkError.failure(let message, let statusCode, let data) {
             throw APIError.httpError(statusCode, data)
-        } catch NetworkError.decodingError(let error) {
-            throw APIError.decodingError(error)
+        } catch NetworkError.parsingError(let reason) {
+            throw APIError.parsingError(reason)
+        } catch NetworkError.invalidURL {
+            throw APIError.invalidURL
         } catch {
             throw APIError.networkError(error)
         }
