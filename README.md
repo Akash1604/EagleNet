@@ -14,6 +14,8 @@ Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`,
 
 For detailed information on feature status, please refer to the [Roadmap](https://github.com/AnbalaganD/EagleNet/wiki/Roadmap) file
 <br><br>
+Check complete documentation here: [Documentation](https://swiftpackageindex.com/AnbalaganD/EagleNet/main/documentation/eaglenet)
+<br><br>
 
 ### Swift Package manager (SPM) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AnbalaganD/EagleNet) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AnbalaganD/EagleNet)
 
