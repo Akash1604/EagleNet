@@ -198,7 +198,7 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         do {
             return try jsonDecoder.decode(Response.self, from: data)
         } catch {
-            throw NetworkError.parsingError(reason: error.localizedDescription)
+            throw NetworkError.parsingError(error: error)
         }
     }
 }

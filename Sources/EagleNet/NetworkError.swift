@@ -24,8 +24,8 @@ import Foundation
 ///         if let errorData = data {
 ///             print("Response data: \(String(data: errorData, encoding: .utf8) ?? "Invalid data")")
 ///         }
-///     case .parsingError(let reason):
-///         print("Failed to parse response: \(reason)")
+///     case .parsingError(let error):
+///         print("Failed to parse response: \(error)")
 ///     }
 /// } catch {
 ///     print("Unexpected error: \(error)")
@@ -40,9 +40,24 @@ public enum NetworkError: Error {
     case failure(message: String, statusCode: Int, data: Data?)
     
     /// Represents an error that occurred during response parsing
-    /// - Parameter reason: Description of why parsing failed
-    case parsingError(reason: String)
+    /// - Parameter error: The underlying parsing error
+    case parsingError(error: Error)
     
     /// Indicates that the provided value could not be converted to a valid URL
     case invalidURL
+}
+
+extension NetworkError: CustomStringConvertible, CustomDebugStringConvertible {
+    /// Human-readable description of the network error
+    public var description: String {
+        return switch self {
+        case .failure(message: let message, statusCode: let statusCode, _):
+            "Network request failure.\nMessage: \(message)\nStatus Code:\(statusCode)"
+        case .parsingError(error: let error): "Error while parsing the response:\n\(error)"
+        case .invalidURL: "Invalid request URL"
+        }
+    }
+    
+    /// Debug description (same as description for NetworkError)
+    public var debugDescription: String { description }
 }

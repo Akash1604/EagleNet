@@ -179,8 +179,8 @@ class APIClient {
             }
         } catch NetworkError.failure(let message, let statusCode, let data) {
             throw APIError.httpError(statusCode, data)
-        } catch NetworkError.parsingError(let reason) {
-            throw APIError.parsingError(reason)
+        } catch NetworkError.parsingError(let error) {
+            throw APIError.parsingError(error)
         } catch NetworkError.invalidURL {
             throw APIError.invalidURL
         } catch {
