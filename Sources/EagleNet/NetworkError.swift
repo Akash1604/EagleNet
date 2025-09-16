@@ -8,10 +8,10 @@
 import Foundation
 
 /// Represents errors that can occur during network operations
-///
+/// 
 /// This enum defines the different types of errors that can occur when making
 /// network requests with EagleNet, including HTTP errors and parsing failures.
-///
+/// 
 /// ## Example Usage
 /// ```swift
 /// do {
@@ -24,8 +24,8 @@ import Foundation
 ///         if let errorData = data {
 ///             print("Response data: \(String(data: errorData, encoding: .utf8) ?? "Invalid data")")
 ///         }
-///     case .parsingError(let error):
-///         print("Failed to parse response: \(error)")
+///     case .parsingError(let error, let raw):
+///         print("Failed to parse response:\nUnderlying Error: \(error) \nRaw Response: \(raw)")
 ///     }
 /// } catch {
 ///     print("Unexpected error: \(error)")
@@ -40,8 +40,10 @@ public enum NetworkError: Error {
     case failure(message: String, statusCode: Int, data: Data?)
     
     /// Represents an error that occurred during response parsing
-    /// - Parameter error: The underlying parsing error
-    case parsingError(error: Error)
+    /// - Parameters:
+    ///   - error: The underlying parsing error
+    ///   - raw: The raw JSON string that was sent to the decoder
+    case parsingError(error: Error, raw: String)
     
     /// Indicates that the provided value could not be converted to a valid URL
     case invalidURL
@@ -53,7 +55,8 @@ extension NetworkError: CustomStringConvertible, CustomDebugStringConvertible {
         return switch self {
         case .failure(message: let message, statusCode: let statusCode, _):
             "Network request failure.\nMessage: \(message)\nStatus Code:\(statusCode)"
-        case .parsingError(error: let error): "Error while parsing the response:\n\(error)"
+        case .parsingError(error: let error, raw: let raw):
+            "Error while parsing the response:\nUnderlying Error: \(error)\nRaw Response: \(raw)"
         case .invalidURL: "Invalid request URL"
         }
     }

@@ -148,10 +148,12 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             }
         }
 
-        urlRequest.setValue(
-            request.contentType.rawValue,
-            forHTTPHeaderField: "Content-Type"
-        )
+        if urlRequest.value(forHTTPHeaderField: "Content-Type") == nil {
+            urlRequest.setValue(
+                request.contentType.rawValue,
+                forHTTPHeaderField: "Content-Type"
+            )
+        }
         
         if let bodyValue = request.body {
             urlRequest.httpBody = try bodyValue.asBody(encoder: jsonEncoder)
@@ -171,9 +173,11 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
             urlComponents.path += path
         }
 
-        urlComponents.queryItems = request.parameters?.map {
+        let queryItems: [URLQueryItem] = request.parameters?.map {
             .init(name: $0.key, value: $0.value)
-        }
+        } ?? []
+        
+        urlComponents.queryItems = (urlComponents.queryItems ?? []) + queryItems
 
         guard let constructedURL = urlComponents.url else {
             throw NetworkError.invalidURL
@@ -198,7 +202,8 @@ final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
         do {
             return try jsonDecoder.decode(Response.self, from: data)
         } catch {
-            throw NetworkError.parsingError(error: error)
+            let rawString = String(data: data, encoding: .utf8) ?? ""
+            throw NetworkError.parsingError(error: error, raw: rawString)
         }
     }
 }

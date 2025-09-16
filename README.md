@@ -12,18 +12,18 @@ This library aims to provide a simple and elegant approach to writing network re
 Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.<br><br>
 
 
-For detailed information on feature status, please refer to the [Roadmap](https://github.com/AnbalaganD/EagleNet/wiki/Roadmap) file
+For detailed information on feature status, please refer to the [Roadmap](https://github.com/AnbalaganD/EagleNet/wiki/Roadmap) file.
 <br><br>
-Check complete documentation here: [Documentation](https://swiftpackageindex.com/AnbalaganD/EagleNet/main/documentation/eaglenet)
+See the complete documentation here: [Documentation](https://swiftpackageindex.com/AnbalaganD/EagleNet/main/documentation/eaglenet)
 <br><br>
 
-### Swift Package manager (SPM) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AnbalaganD/EagleNet) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AnbalaganD/EagleNet)
+### Swift Package Manager (SPM)<br/> [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/AnbalaganD/EagleNet) [![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FAnbalaganD%2FEagleNet%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/AnbalaganD/EagleNet)
 
-EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use below URL to add as a dependency
+EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use the URL below to add it as a dependency.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.9"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.10"))
 ]
 ```
 
@@ -105,7 +105,7 @@ EagleNet.addRequestInterceptor(
 )
 ```
 
-### Response Interceptor
+### Response Interceptors
 ```swift
 struct LoggingInterceptor: ResponseInterceptor {
     func modify(data: Data, urlResponse: URLResponse) async throws -> (Data, URLResponse) {

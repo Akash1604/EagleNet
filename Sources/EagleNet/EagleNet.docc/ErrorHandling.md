@@ -38,8 +38,9 @@ do {
     if let errorData = data {
         print("Response data: \(String(data: errorData, encoding: .utf8) ?? "Invalid data")")
     }
-} catch NetworkError.parsingError(let error) {
+} catch NetworkError.parsingError(let error, let raw) {
     print("Failed to parse response: \(error)")
+    print("Raw response: \(raw)")
 } catch {
     print("Unexpected error: \(error)")
 }
@@ -76,7 +77,7 @@ func handleNetworkError(_ error: Error) {
             showAlert("Invalid URL")
         case .failure(let message, let statusCode, _):
             showAlert("HTTP Error \(statusCode): \(message)")
-        case .parsingError(let error):
+        case .parsingError(let error, let raw):
             showAlert("Failed to parse response: \(error)")
         }
     } else {
