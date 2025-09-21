@@ -51,7 +51,7 @@
 public enum EagleNet {
     /// The underlying network service that handles all requests
     @EagleNetActor
-    static var networkService: NetworkService = NetworkServiceImpl()
+    static var networkService: NetworkService = DefaultNetworkService()
     
     /// Configures EagleNet with a custom network service implementation.
     ///

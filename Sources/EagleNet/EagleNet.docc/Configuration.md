@@ -20,7 +20,7 @@ let configuration = URLSessionConfiguration.default
 configuration.timeoutIntervalForRequest = 30
 configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
 
-let customService = NetworkServiceImpl(
+let customService = DefaultNetworkService(
     urlSession: URLSession(configuration: configuration),
     jsonEncoder: JSONEncoder(),
     jsonDecoder: JSONDecoder()
@@ -50,7 +50,7 @@ encoder.dateEncodingStrategy = .iso8601
 let decoder = JSONDecoder()
 decoder.dateDecodingStrategy = .iso8601
 
-let service = NetworkServiceImpl(
+let service = DefaultNetworkService(
     urlSession: .shared,
     jsonEncoder: encoder,
     jsonDecoder: decoder

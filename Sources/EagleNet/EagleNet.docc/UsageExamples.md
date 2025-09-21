@@ -31,7 +31,7 @@ class UserService {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = 30
         
-        let customService = NetworkServiceImpl(
+        let customService = DefaultNetworkService(
             urlSession: URLSession(configuration: configuration),
             jsonEncoder: JSONEncoder(),
             jsonDecoder: JSONDecoder()

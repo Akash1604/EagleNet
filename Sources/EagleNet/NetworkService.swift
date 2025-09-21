@@ -17,7 +17,7 @@ import Foundation
 ///
 /// Example usage:
 /// ```swift
-/// let service = NetworkServiceImpl(
+/// let service = DefaultNetworkService(
 ///     urlSession: .shared,
 ///     jsonEncoder: JSONEncoder(),
 ///     jsonDecoder: JSONDecoder()
@@ -67,7 +67,7 @@ public protocol NetworkService: Sendable {
     func addResponseInterceptor(_ interceptor: ResponseInterceptor)
 }
 
-final class NetworkServiceImpl: NetworkService, @unchecked Sendable {
+final class DefaultNetworkService: NetworkService, @unchecked Sendable {
     private let urlSession: URLSession
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
