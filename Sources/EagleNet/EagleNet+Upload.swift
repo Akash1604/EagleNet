@@ -43,7 +43,7 @@ extension EagleNet {
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the upload fails or response cannot be decoded
     public static func upload<Response: Decodable>(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
         queryParameters: [String: String]? = nil,

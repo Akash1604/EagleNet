@@ -26,7 +26,7 @@
 /// ```
 public struct DataRequest: NetworkRequestable {
     /// The base URL for the request
-    public let url: URLConvertible
+    public let url: any URLConvertible
     
     /// Optional path component to append to the base URL
     public let path: String?
@@ -41,7 +41,7 @@ public struct DataRequest: NetworkRequestable {
     public private(set) var parameters: [String: String]?
     
     /// Optional body data for the request
-    public private(set) var body: BodyConvertible?
+    public private(set) var body: (any BodyConvertible)?
     
     /// Content type of the request (defaults to application/json)
     public var contentType: ContentType { .applicationJSON }
@@ -55,12 +55,12 @@ public struct DataRequest: NetworkRequestable {
     ///   - parameters: Optional query parameters
     ///   - body: Optional request body conforming to BodyConvertible
     public init(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .get,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: BodyConvertible? = nil
+        body: (any BodyConvertible)? = nil
     ) {
         self.url = url
         self.path = path
@@ -79,12 +79,12 @@ public struct DataRequest: NetworkRequestable {
     ///   - parameters: Optional query parameters
     ///   - body: Optional request body conforming to Encodable
     public init(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .get,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: Encodable? = nil
+        body: (any Encodable)? = nil
     ) {
         self.url = url
         self.path = path

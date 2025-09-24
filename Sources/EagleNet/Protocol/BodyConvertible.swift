@@ -67,7 +67,7 @@ extension BodyConvertible {
 extension Encodable {
     /// Converts any Encodable type to a BodyConvertible
     /// - Returns: A BodyConvertible wrapper around the Encodable object
-    func asBodyConvertible() -> BodyConvertible {
+    func asBodyConvertible() -> any BodyConvertible {
         AnyBodyConvertible(body: self)
     }
 }

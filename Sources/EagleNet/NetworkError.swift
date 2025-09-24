@@ -43,7 +43,7 @@ public enum NetworkError: Error {
     /// - Parameters:
     ///   - error: The underlying parsing error
     ///   - raw: The raw JSON string that was sent to the decoder
-    case parsingError(error: Error, raw: String)
+    case parsingError(error: any Error, raw: String)
     
     /// Indicates that the provided value could not be converted to a valid URL
     case invalidURL

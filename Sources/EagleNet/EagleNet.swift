@@ -51,7 +51,7 @@
 public enum EagleNet {
     /// The underlying network service that handles all requests
     @EagleNetActor
-    static var networkService: NetworkService = DefaultNetworkService()
+    static var networkService: any NetworkService = DefaultNetworkService()
     
     /// Configures EagleNet with a custom network service implementation.
     ///
@@ -87,7 +87,7 @@ public enum EagleNet {
     /// - Important: Call this method before making any network requests to ensure
     ///   the custom configuration is applied consistently.
     @EagleNetActor
-    public static func configure(networkService: NetworkService) {
+    public static func configure(networkService: any NetworkService) {
         EagleNet.networkService = networkService
     }
 }

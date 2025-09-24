@@ -20,7 +20,8 @@ let package = Package(
         .target(
             name: "EagleNet",
             swiftSettings: [
-                .enableUpcomingFeature("StrictConcurrency")
+                .enableUpcomingFeature("StrictConcurrency"),
+                .enableUpcomingFeature("ExistentialAny")
             ]
         ),
         .testTarget(

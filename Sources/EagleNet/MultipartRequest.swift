@@ -27,7 +27,7 @@ import Foundation
 /// ```
 public struct MultipartRequest: NetworkRequestable {
     /// The base URL for the request
-    public let url: URLConvertible
+    public let url: any URLConvertible
     
     /// Optional path component to append to the base URL
     public let path: String?
@@ -75,7 +75,7 @@ public struct MultipartRequest: NetworkRequestable {
     ///   - headers: Optional HTTP headers
     ///   - parameters: Optional query parameters
     public init(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         httpMethod: HTTPMethod = .post,
         headers: [String: String]? = nil,

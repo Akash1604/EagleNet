@@ -28,11 +28,11 @@ extension EagleNet {
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
     public static func delete<Response: Decodable>(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: BodyConvertible? = nil
+        body: (any BodyConvertible)? = nil
     ) async throws -> Response {
         try await networkService.execute(
             DataRequest(
@@ -72,7 +72,7 @@ extension EagleNet {
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
     public static func delete<Response: Decodable>(
-        url: URLConvertible,
+        url: any URLConvertible,
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,

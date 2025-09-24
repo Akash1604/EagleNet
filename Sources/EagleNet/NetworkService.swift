@@ -45,7 +45,7 @@ public protocol NetworkService: Sendable {
     /// - Parameter request: The request to execute
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
-    func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response
+    func execute<Response: Decodable>(_ request: any NetworkRequestable) async throws -> Response
 
     /// Uploads data with progress tracking
     /// - Parameters:
@@ -54,17 +54,17 @@ public protocol NetworkService: Sendable {
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the upload fails or response cannot be decoded
     func upload<Response: Decodable>(
-        _ request: NetworkRequestable,
+        _ request: any NetworkRequestable,
         progress: ProgressHandler?
     ) async throws -> Response
 
     /// Adds an interceptor to modify requests before they are sent
     /// - Parameter interceptor: The request interceptor to add
-    func addRequestInterceptor(_ interceptor: RequestInterceptor)
+    func addRequestInterceptor(_ interceptor: any RequestInterceptor)
 
     /// Adds an interceptor to modify responses before they are decoded
     /// - Parameter interceptor: The response interceptor to add
-    func addResponseInterceptor(_ interceptor: ResponseInterceptor)
+    func addResponseInterceptor(_ interceptor: any ResponseInterceptor)
 }
 
 final class DefaultNetworkService: NetworkService, @unchecked Sendable {
@@ -72,8 +72,8 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
     private let jsonEncoder: JSONEncoder
     private let jsonDecoder: JSONDecoder
 
-    private var requestInterceptor = [RequestInterceptor]()
-    private var responseInterceptors = [ResponseInterceptor]()
+    private var requestInterceptor = [any RequestInterceptor]()
+    private var responseInterceptors = [any ResponseInterceptor]()
 
     required init(
         urlSession: URLSession = .shared,
@@ -85,7 +85,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
         self.jsonDecoder = jsonDecoder
     }
 
-    func execute<Response: Decodable>(_ request: NetworkRequestable) async throws -> Response {
+    func execute<Response: Decodable>(_ request: any NetworkRequestable) async throws -> Response {
         var urlRequest = try buildRequest(from: request)
 
         urlRequest = try await requestInterceptor.reduce(urlRequest) { result, interceptor in
@@ -102,7 +102,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
     }
     
     func upload<Response: Decodable>(
-        _ request: NetworkRequestable,
+        _ request: any NetworkRequestable,
         progress: ProgressHandler? = nil
     ) async throws -> Response {
         var urlRequest = try buildRequest(from: request)
@@ -126,16 +126,16 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
         return try handleResponse(data: data, response: urlResponse)
     }
 
-    func addRequestInterceptor(_ interceptor: RequestInterceptor) {
+    func addRequestInterceptor(_ interceptor: any RequestInterceptor) {
         requestInterceptor.append(interceptor)
     }
 
-    func addResponseInterceptor(_ interceptor: ResponseInterceptor) {
+    func addResponseInterceptor(_ interceptor: any ResponseInterceptor) {
         responseInterceptors.append(interceptor)
     }
     
     private func buildRequest(
-        from request: NetworkRequestable
+        from request: any NetworkRequestable
     ) throws -> URLRequest {
         let url = try getRequestURL(request)
 
@@ -162,7 +162,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
         return urlRequest
     }
 
-    private func getRequestURL(_ request: NetworkRequestable) throws -> URL {
+    private func getRequestURL(_ request: any NetworkRequestable) throws -> URL {
         let url = try request.url.asURL()
 
         guard var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false) else {

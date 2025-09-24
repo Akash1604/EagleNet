@@ -33,7 +33,7 @@
 /// instead of creating your own custom type.
 public protocol NetworkRequestable: Sendable {
     /// The base URL for the request
-    var url: URLConvertible { get }
+    var url: any URLConvertible { get }
     
     /// Optional path to append to the base URL
     var path: String? { get }
@@ -48,7 +48,7 @@ public protocol NetworkRequestable: Sendable {
     var parameters: [String: String]? { get }
     
     /// Optional request body
-    var body: BodyConvertible? { get }
+    var body: (any BodyConvertible)? { get }
     
     /// The content type of the request (e.g., application/json)
     var contentType: ContentType { get }
