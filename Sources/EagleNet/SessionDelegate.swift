@@ -12,7 +12,7 @@ final class SessionDelegate: NSObject, URLSessionTaskDelegate {
     init(progress: ProgressHandler?) {
         self.progress = progress
     }
-    
+
     func urlSession(
         _ session: URLSession,
         task: URLSessionTask,

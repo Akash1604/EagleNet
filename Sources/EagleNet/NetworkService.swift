@@ -100,7 +100,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
 
         return try handleResponse(data: data, response: urlResponse)
     }
-    
+
     func upload<Response: Decodable>(
         _ request: any NetworkRequestable,
         progress: ProgressHandler? = nil
@@ -133,7 +133,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
     func addResponseInterceptor(_ interceptor: any ResponseInterceptor) {
         responseInterceptors.append(interceptor)
     }
-    
+
     private func buildRequest(
         from request: any NetworkRequestable
     ) throws -> URLRequest {
@@ -154,11 +154,11 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
                 forHTTPHeaderField: "Content-Type"
             )
         }
-        
+
         if let bodyValue = request.body {
             urlRequest.httpBody = try bodyValue.asBody(encoder: jsonEncoder)
         }
-        
+
         return urlRequest
     }
 
@@ -176,7 +176,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
         let queryItems: [URLQueryItem] = request.parameters?.map {
             .init(name: $0.key, value: $0.value)
         } ?? []
-        
+
         urlComponents.queryItems = (urlComponents.queryItems ?? []) + queryItems
 
         guard let constructedURL = urlComponents.url else {
@@ -185,7 +185,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
 
         return constructedURL
     }
-    
+
     private func handleResponse<Response: Decodable>(
         data: Data,
         response: URLResponse

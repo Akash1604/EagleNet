@@ -57,19 +57,19 @@ extension ContentType: ExpressibleByStringLiteral {
 public extension ContentType {
     /// Plain text content type (text/plain)
     static let textPlain: ContentType = "text/plain"
-    
+
     /// JSON content type (application/json)
     static let applicationJSON: ContentType = "application/json"
-    
+
     /// Multipart form data content type (multipart/form-data)
     static let multipartFormData: ContentType = "multipart/form-data"
-    
+
     /// Binary data content type (application/octet-stream)
     static let applicationOctetStream: ContentType = "application/octet-stream"
-    
+
     /// PNG image content type (image/png)
     static let pngImage: ContentType = "image/png"
-    
+
     /// JPEG image content type (image/jpeg)
     static let jpegImage: ContentType = "image/jpeg"
 }

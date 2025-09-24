@@ -34,22 +34,22 @@
 public protocol NetworkRequestable: Sendable {
     /// The base URL for the request
     var url: any URLConvertible { get }
-    
+
     /// Optional path to append to the base URL
     var path: String? { get }
-    
+
     /// The HTTP method for the request (GET, POST, PUT, DELETE, etc.)
     var httpMethod: HTTPMethod { get }
-    
+
     /// Optional HTTP headers to include with the request
     var headers: [String: String]? { get }
-    
+
     /// Optional query parameters to include in the URL
     var parameters: [String: String]? { get }
-    
+
     /// Optional request body
     var body: (any BodyConvertible)? { get }
-    
+
     /// The content type of the request (e.g., application/json)
     var contentType: ContentType { get }
 }

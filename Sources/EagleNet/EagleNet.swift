@@ -52,7 +52,7 @@ public enum EagleNet {
     /// The underlying network service that handles all requests
     @EagleNetActor
     static var networkService: any NetworkService = DefaultNetworkService()
-    
+
     /// Configures EagleNet with a custom network service implementation.
     ///
     /// This method allows you to replace the default NetworkService with a custom implementation,

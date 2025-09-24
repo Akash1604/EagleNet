@@ -28,22 +28,22 @@ import Foundation
 public struct MultipartRequest: NetworkRequestable {
     /// The base URL for the request
     public let url: any URLConvertible
-    
+
     /// Optional path component to append to the base URL
     public let path: String?
-    
+
     /// HTTP method for the request (defaults to POST)
     public let httpMethod: HTTPMethod
-    
+
     /// Optional HTTP headers for the request
     public private(set) var headers: [String: String]?
-    
+
     /// Optional query parameters for the request
     public private(set) var parameters: [String: String]?
 
     /// Internal storage for multipart form data
     private var data = Data()
-    
+
     /// The compiled body data with boundary terminator
     public var body: (any BodyConvertible)? {
         if data.isEmpty { return nil }
@@ -60,10 +60,10 @@ public struct MultipartRequest: NetworkRequestable {
 
     /// Unique boundary string for separating form parts
     public let boundary = "Boundary-\(UUID().uuidString)"
-    
+
     /// CRLF separator for multipart sections
     private let separator = "\r\n"
-    
+
     /// Standard content disposition header
     private let contentDisposition = "Content-Disposition: form-data; name="
 

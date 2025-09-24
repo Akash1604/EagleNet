@@ -38,13 +38,13 @@ public enum NetworkError: Error {
     ///   - statusCode: HTTP status code
     ///   - data: Optional raw response data for debugging or custom error parsing
     case failure(message: String, statusCode: Int, data: Data?)
-    
+
     /// Represents an error that occurred during response parsing
     /// - Parameters:
     ///   - error: The underlying parsing error
     ///   - raw: The raw JSON string that was sent to the decoder
     case parsingError(error: any Error, raw: String)
-    
+
     /// Indicates that the provided value could not be converted to a valid URL
     case invalidURL
 }
@@ -60,7 +60,7 @@ extension NetworkError: CustomStringConvertible, CustomDebugStringConvertible {
         case .invalidURL: "Invalid request URL"
         }
     }
-    
+
     /// Debug description (same as description for NetworkError)
     public var debugDescription: String { description }
 }
