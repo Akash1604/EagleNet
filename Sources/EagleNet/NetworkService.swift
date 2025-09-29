@@ -17,7 +17,7 @@ import Foundation
 ///
 /// Example usage:
 /// ```swift
-/// let service = DefaultNetworkService(
+/// let service = EagleNet.defaultService(
 ///     urlSession: .shared,
 ///     jsonEncoder: JSONEncoder(),
 ///     jsonDecoder: JSONDecoder()

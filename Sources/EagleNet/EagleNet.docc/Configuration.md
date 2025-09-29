@@ -20,7 +20,7 @@ let configuration = URLSessionConfiguration.default
 configuration.timeoutIntervalForRequest = 30
 configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
 
-let customService = DefaultNetworkService(
+let customService = EagleNet.defaultService(
     urlSession: URLSession(configuration: configuration),
     jsonEncoder: JSONEncoder(),
     jsonDecoder: JSONDecoder()
@@ -50,7 +50,7 @@ encoder.dateEncodingStrategy = .iso8601
 let decoder = JSONDecoder()
 decoder.dateDecodingStrategy = .iso8601
 
-let service = DefaultNetworkService(
+let service = EagleNet.defaultService(
     urlSession: .shared,
     jsonEncoder: encoder,
     jsonDecoder: decoder

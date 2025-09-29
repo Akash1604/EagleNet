@@ -5,6 +5,8 @@
 //  Created by Anbalagan on 19/08/24.
 //
 
+import Foundation
+
 /// EagleNet is a lightweight networking library built on top of URLSession.
 ///
 /// This library provides a simple and elegant approach to writing network requests,
@@ -69,7 +71,7 @@ public enum EagleNet {
     /// configuration.timeoutIntervalForRequest = 30
     /// configuration.requestCachePolicy = .reloadIgnoringLocalCacheData
     ///
-    /// let customService = CustomNetworkService(
+    /// let customService = EagleNet.defaultService(
     ///     urlSession: URLSession(configuration: configuration),
     ///     jsonEncoder: JSONEncoder(),
     ///     jsonDecoder: JSONDecoder()
@@ -89,5 +91,50 @@ public enum EagleNet {
     @EagleNetActor
     public static func configure(networkService: any NetworkService) {
         EagleNet.networkService = networkService
+    }
+    
+    /// Creates a default network service with optional custom configuration
+    ///
+    /// This factory method provides a convenient way to create a NetworkService instance
+    /// with custom URLSession configuration, JSON encoders, or decoders.
+    ///
+    /// - Parameters:
+    ///   - urlSession: URLSession to use for network requests (defaults to .shared)
+    ///   - jsonEncoder: JSON encoder for serializing request bodies (defaults to JSONEncoder())
+    ///   - jsonDecoder: JSON decoder for deserializing responses (defaults to JSONDecoder())
+    /// - Returns: Configured NetworkService instance
+    ///
+    /// ## Usage Examples
+    ///
+    /// ### Basic Usage
+    /// ```swift
+    /// let service = EagleNet.defaultService()
+    /// EagleNet.configure(networkService: service)
+    /// ```
+    ///
+    /// ### Custom Configuration
+    /// ```swift
+    /// let configuration = URLSessionConfiguration.default
+    /// configuration.timeoutIntervalForRequest = 60
+    ///
+    /// let encoder = JSONEncoder()
+    /// encoder.dateEncodingStrategy = .iso8601
+    ///
+    /// let service = EagleNet.defaultService(
+    ///     urlSession: URLSession(configuration: configuration),
+    ///     jsonEncoder: encoder
+    /// )
+    /// EagleNet.configure(networkService: service)
+    /// ```
+    public static func defaultService(
+        urlSession: URLSession = .shared,
+        jsonEncoder: JSONEncoder = .init(),
+        jsonDecoder: JSONDecoder = .init()
+    ) -> any NetworkService {
+        DefaultNetworkService(
+            urlSession: urlSession,
+            jsonEncoder: jsonEncoder,
+            jsonDecoder: jsonDecoder
+        )
     }
 }
