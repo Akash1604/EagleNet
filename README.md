@@ -9,7 +9,7 @@ This library aims to provide a simple and elegant approach to writing network re
 - **Customizable and testable:** Allow for flexibility and ensure code quality through testing.
 
 
-Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.<br><br>
+Currently, this library supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`), custom HTTP methods, and includes a small file upload feature using `multipart/form-data`. These capabilities address the majority of network communication needs in most applications.<br><br>
 
 
 For detailed information on feature status, please refer to the [Roadmap](https://github.com/AnbalaganD/EagleNet/wiki/Roadmap) file.
@@ -23,7 +23,7 @@ EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.11"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.1.0"))
 ]
 ```
 
@@ -123,6 +123,32 @@ struct LoggingInterceptor: ResponseInterceptor {
 
 // Add response interceptor to network service
 EagleNet.addResponseInterceptor(LoggingInterceptor())
+```
+
+### Custom HTTP Methods
+
+```swift
+// Using custom HTTP methods like PATCH
+let patchRequest = DataRequest(
+    url: "https://api.example.com/users/1",
+    httpMethod: .custom("PATCH"),
+    body: ["status": "active"]
+)
+
+let response: User = try await EagleNet.execute(patchRequest)
+```
+
+### Configuration
+
+```swift
+// Custom URLSession configuration
+let customService = EagleNet.defaultService(
+    urlSession: URLSession(configuration: .ephemeral),
+    jsonEncoder: JSONEncoder(),
+    jsonDecoder: JSONDecoder()
+)
+
+EagleNet.configure(networkService: customService)
 ```
 
 ## Author

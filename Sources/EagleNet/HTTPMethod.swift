@@ -8,7 +8,7 @@
 /// Represents HTTP request methods used in network operations.
 ///
 /// This struct provides a type-safe way to specify HTTP methods for network requests.
-/// EagleNet supports the standard HTTP methods: GET, POST, PUT, and DELETE.
+/// EagleNet supports the standard HTTP methods: GET, POST, PUT, DELETE, and custom methods.
 ///
 /// ## Usage
 /// ```swift
@@ -25,7 +25,7 @@
 /// )
 ///
 /// // Custom HTTP method if needed
-/// let patch = HTTPMethod(rawValue: "PATCH")
+/// let patch = HTTPMethod.custom("PATCH")
 /// ```
 public struct HTTPMethod: RawRepresentable, Sendable {
     /// The string representation of the HTTP method
@@ -48,4 +48,27 @@ public struct HTTPMethod: RawRepresentable, Sendable {
 
     /// HTTP DELETE method for removing resources
     public static let delete = HTTPMethod(rawValue: "DELETE")
+    
+    /// Creates a custom HTTP method with the specified method string
+    ///
+    /// Use this method to create HTTP methods that are not predefined in EagleNet.
+    /// This is useful for REST APIs that use non-standard HTTP methods like PATCH, HEAD, OPTIONS, etc.
+    ///
+    /// - Parameter method: The HTTP method string (e.g., "PATCH", "HEAD", "OPTIONS")
+    /// - Returns: HTTPMethod instance for the custom method
+    ///
+    /// ## Usage Examples
+    /// ```swift
+    /// // PATCH method for partial updates
+    /// let patchMethod = HTTPMethod.custom("PATCH")
+    ///
+    /// // HEAD method for checking resource existence
+    /// let headMethod = HTTPMethod.custom("HEAD")
+    ///
+    /// // OPTIONS method for CORS preflight
+    /// let optionsMethod = HTTPMethod.custom("OPTIONS")
+    /// ```
+    public static func custom(_ method: String) -> HTTPMethod {
+        HTTPMethod(rawValue: method)
+    }
 }

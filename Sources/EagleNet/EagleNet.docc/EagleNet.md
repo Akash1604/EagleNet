@@ -30,6 +30,7 @@ Currently supports basic HTTP data requests (`GET`, `POST`, `PUT`, `DELETE`) and
 ### Making Requests
 
 - <doc:BasicRequests>
+- <doc:CustomRequests>
 - <doc:FileUpload>
 
 ### Advanced Features
@@ -51,7 +52,7 @@ Add EagleNet to your project using Swift Package Manager:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.11"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.1.0"))
 ]
 ```
 

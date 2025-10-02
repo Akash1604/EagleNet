@@ -12,7 +12,7 @@ EagleNet is available through Swift Package Manager. Add it to your project by i
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.0.11"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.1.0"))
 ]
 ```
 
