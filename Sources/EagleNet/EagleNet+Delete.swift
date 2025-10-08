@@ -7,46 +7,7 @@
 
 /// Extension providing DELETE request convenience methods for EagleNet
 extension EagleNet {
-    /// Performs a DELETE request with a BodyConvertible body
-    ///
-    /// Example usage:
-    /// ```swift
-    /// // Delete a specific resource
-    /// let response: DeleteResponse = try await EagleNet.delete(
-    ///     url: "https://api.example.com",
-    ///     path: "/users/123",
-    ///     headers: ["Authorization": "Bearer token123"]
-    /// )
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - url: The base URL for the request
-    ///   - path: Optional path to append to the URL
-    ///   - headers: Optional HTTP headers
-    ///   - parameters: Optional query parameters
-    ///   - body: Optional request body conforming to BodyConvertible
-    /// - Returns: Decoded response of type `Response`
-    /// - Throws: NetworkError if the request fails or response cannot be decoded
-    public static func delete<Response: Decodable>(
-        url: any URLConvertible,
-        path: String? = nil,
-        headers: [String: String]? = nil,
-        parameters: [String: String]? = nil,
-        body: (any BodyConvertible)? = nil
-    ) async throws -> Response {
-        try await networkService.execute(
-            DataRequest(
-                url: url,
-                path: path,
-                httpMethod: .delete,
-                headers: headers,
-                parameters: parameters,
-                body: body
-            )
-        )
-    }
-
-    /// Performs a DELETE request with an Encodable body
+    /// Performs a DELETE request
     ///
     /// Example usage:
     /// ```swift
@@ -68,7 +29,7 @@ extension EagleNet {
     ///   - path: Optional path to append to the URL
     ///   - headers: Optional HTTP headers
     ///   - parameters: Optional query parameters
-    ///   - body: Optional request body conforming to Encodable
+    ///   - body: Optional request body (any Encodable type or Data)
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
     public static func delete<Response: Decodable>(
@@ -76,7 +37,7 @@ extension EagleNet {
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: (some Encodable)? = nil
+        body: Body? = nil
     ) async throws -> Response {
         try await networkService.execute(
             DataRequest(

@@ -7,45 +7,7 @@
 
 /// Extension providing GET request convenience methods for EagleNet
 extension EagleNet {
-    /// Performs a GET request with a BodyConvertible body
-    ///
-    /// Example usage:
-    /// ```swift
-    /// let users: [User] = try await EagleNet.get(
-    ///     url: "https://api.example.com",
-    ///     path: "/users",
-    ///     parameters: ["page": "1", "limit": "10"]
-    /// )
-    /// ```
-    ///
-    /// - Parameters:
-    ///   - url: The base URL for the request
-    ///   - path: Optional path to append to the URL
-    ///   - headers: Optional HTTP headers
-    ///   - parameters: Optional query parameters
-    ///   - body: Optional request body conforming to BodyConvertible
-    /// - Returns: Decoded response of type `Response`
-    /// - Throws: NetworkError if the request fails or response cannot be decoded
-    public static func get<Response: Decodable>(
-        url: any URLConvertible,
-        path: String? = nil,
-        headers: [String: String]? = nil,
-        parameters: [String: String]? = nil,
-        body: (any BodyConvertible)? = nil
-    ) async throws -> Response {
-        try await networkService.execute(
-            DataRequest(
-                url: url,
-                path: path,
-                httpMethod: .get,
-                headers: headers,
-                parameters: parameters,
-                body: body
-            )
-        )
-    }
-
-    /// Performs a GET request with an Encodable body
+    /// Performs a GET request
     ///
     /// Example usage:
     /// ```swift
@@ -67,7 +29,7 @@ extension EagleNet {
     ///   - path: Optional path to append to the URL
     ///   - headers: Optional HTTP headers
     ///   - parameters: Optional query parameters
-    ///   - body: Optional request body conforming to Encodable
+    ///   - body: Optional request body (any Encodable type or Data)
     /// - Returns: Decoded response of type `Response`
     /// - Throws: NetworkError if the request fails or response cannot be decoded
     public static func get<Response: Decodable>(
@@ -75,7 +37,7 @@ extension EagleNet {
         path: String? = nil,
         headers: [String: String]? = nil,
         parameters: [String: String]? = nil,
-        body: (some Encodable)? = nil
+        body: Body? = nil
     ) async throws -> Response {
         try await networkService.execute(
             DataRequest(

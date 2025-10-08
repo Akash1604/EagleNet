@@ -156,7 +156,7 @@ final class DefaultNetworkService: NetworkService, @unchecked Sendable {
         }
 
         if let bodyValue = request.body {
-            urlRequest.httpBody = try bodyValue.asBody(encoder: jsonEncoder)
+            urlRequest.httpBody = try bodyValue as? Data ?? jsonEncoder.encode(bodyValue)
         }
 
         return urlRequest

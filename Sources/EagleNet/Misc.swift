@@ -23,3 +23,22 @@
 /// }
 /// ```
 public typealias ProgressHandler = @Sendable (Int64, Int64) -> Void
+
+/// Type alias for request body.
+///
+/// Body can be any Encodable type (structs, classes, dictionaries, arrays) or raw Data.
+/// When using Data, it will be sent as-is without JSON encoding.
+///
+/// Example:
+/// ```swift
+/// // Using Encodable struct
+/// struct User: Encodable {
+///     let name: String
+/// }
+/// let body: Body = User(name: "John")
+///
+/// // Using raw Data
+/// let jsonData = "{\"name\": \"John\"}".data(using: .utf8)!
+/// let body: Body = jsonData
+/// ```
+public typealias Body = any Encodable

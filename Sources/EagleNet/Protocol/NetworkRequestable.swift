@@ -21,12 +21,12 @@
 ///     let httpMethod: HTTPMethod = .get
 ///     let headers: [String: String]? = ["Authorization": "Bearer token123"]
 ///     let parameters: [String: String]? = ["page": "1", "limit": "10"]
-///     let body: BodyConvertible? = nil
-///     // contentType will use the default implementation (.json)
+///     let body: Body? = nil  // Body is any Encodable or Data
+///     let contentType: ContentType = .applicationJSON
 /// }
 ///
 /// // Using the request
-/// let users: [User] = try await EagleNet.networkService.execute(UserRequest())
+/// let users: [User] = try await EagleNet.execute(UserRequest())
 /// ```
 ///
 /// For most common use cases, you can use the built-in `DataRequest` and `MultipartRequest` implementation
@@ -47,8 +47,8 @@ public protocol NetworkRequestable: Sendable {
     /// Optional query parameters to include in the URL
     var parameters: [String: String]? { get }
 
-    /// Optional request body
-    var body: (any BodyConvertible)? { get }
+    /// Optional request body (any Encodable type or Data)
+    var body: Body? { get }
 
     /// The content type of the request (e.g., application/json)
     var contentType: ContentType { get }

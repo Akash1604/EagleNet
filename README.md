@@ -23,7 +23,7 @@ EagleNet is available through [SPM](https://github.com/AnbalaganD/EagleNet). Use
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "1.1.0"))
+    .package(url: "https://github.com/AnbalaganD/EagleNet", .upToNextMajor(from: "2.0.0"))
 ]
 ```
 
@@ -129,10 +129,14 @@ EagleNet.addResponseInterceptor(LoggingInterceptor())
 
 ```swift
 // Using custom HTTP methods like PATCH
+struct UpdateStatus: Encodable {
+    let status: String
+}
+
 let patchRequest = DataRequest(
     url: "https://api.example.com/users/1",
     httpMethod: .custom("PATCH"),
-    body: ["status": "active"]
+    body: UpdateStatus(status: "active")
 )
 
 let response: User = try await EagleNet.execute(patchRequest)

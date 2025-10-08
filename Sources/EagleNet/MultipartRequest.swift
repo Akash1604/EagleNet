@@ -45,7 +45,7 @@ public struct MultipartRequest: NetworkRequestable {
     private var data = Data()
 
     /// The compiled body data with boundary terminator
-    public var body: (any BodyConvertible)? {
+    public var body: Body? {
         if data.isEmpty { return nil }
 
         var finalData = data

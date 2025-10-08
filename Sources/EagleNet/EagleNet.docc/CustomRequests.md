@@ -14,10 +14,14 @@ EagleNet provides flexibility for advanced use cases through custom HTTP methods
 
 ### PATCH Requests
 ```swift
+struct UpdateStatus: Encodable {
+    let status: String
+}
+
 let patchRequest = DataRequest(
     url: "https://api.example.com/users/1",
     httpMethod: .custom("PATCH"),
-    body: ["status": "active"]
+    body: UpdateStatus(status: "active")
 )
 
 let response: User = try await EagleNet.execute(patchRequest)
@@ -67,12 +71,12 @@ For complete control, implement your own NetworkRequestable:
 
 ```swift
 struct CustomAPIRequest: NetworkRequestable {
-    let url: URLConvertible
+    let url: any URLConvertible
     let path: String?
     let httpMethod: HTTPMethod
     let headers: [String: String]?
     let parameters: [String: String]?
-    let body: BodyConvertible?
+    let body: Body?  // Body is any Encodable or Data
     let contentType: ContentType
     
     init(endpoint: String, apiKey: String) {
